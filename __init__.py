@@ -1,0 +1,12 @@
+
+from os.path import dirname, basename, isfile, isdir
+import glob
+modules = glob.glob(dirname(__file__)+"/*.py")
+ls = glob.glob(dirname(__file__)+"/*")
+__all__ = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')
+           ] + [basename(d) for d in ls if isdir(d) and not d.endswith("__pycache__")]
+
+# allows use of line: from __init__ import *
+# This is necessary for the top level of a package
+for module in __all__:
+    globals()[module] = __import__(module)
